@@ -1,4 +1,4 @@
-import { Container, Button, Stack, TextField } from '@mui/material';
+import { Container, Button, Stack, TextField, CircularProgress, Grid } from '@mui/material';
 import React, { useContext } from 'react';
 import { UserCard } from '../../../../components/UserCard';
 import { User } from '../../../../domain/models/user_model';
@@ -25,9 +25,9 @@ const HomePage: React.FC<HomePageInterface> = () => {
 		// updateUser,
 		deleteUser,
 		searchUserById,
+		searchUserByName,
 	} = useContext(HomeContext);
 
-	console.log('users: ' + users);
 
 	const [number, setnumber] = useState(1);
 
@@ -36,8 +36,8 @@ const HomePage: React.FC<HomePageInterface> = () => {
 		<Container>
 			<Stack
 				direction="row"
-				justifyContent="center"
-				alignItems="center"
+				justifyContent="space-between"
+				alignItems="start"
 				spacing={2}
 			>
 				<Stack
@@ -70,24 +70,51 @@ const HomePage: React.FC<HomePageInterface> = () => {
 							searchUserById(parseInt(e.target.value))
 						}}
 					/>
+					<TextField
+						id="outlined-basic"
+						label="Buscar por mombre"
+						variant="outlined"
+						onChange={(e) => {
+							searchUserByName(e.target.value)
+						}}
+					/>
+					<UserForm />
 				</Stack>
-				<UserForm />
+
+				<div>
+					<Grid
+						container
+						spacing={0}
+						direction="column"
+						alignItems="center"
+						justifyContent="center"
+						style={{ minHeight: '100vh', minWidth: '50vw' }}
+					>
+
+						<Grid item xs={3}>
+							{loading && <CircularProgress size='100px' />}
+							{error && error.name === 'UnexpectedError' ? <div>Ha ocurrido un error</div> : ''}
+
+							{users && <div>
+								{users.map((user: User) =>
+									<UserCard
+										key={user.id}
+										user={user}
+										onDelete={() => deleteUser(user)}
+									/>
+								)}
+							</div>
+							}
+						</Grid>
+
+					</Grid>
+
+
+				</div>
 			</Stack>
 
 
-			{loading && <div> Cargando...</div>}
-			{error && error.name === 'UnexpectedError' ? <div>Ha ocurrido un error</div> : ''}
 
-			{users && <div>
-				{users.map((user: User) =>
-					<UserCard
-						key={user.id}
-						user={user}
-						onDelete={() => deleteUser(user)}
-					/>
-				)}
-			</div>
-			}
 		</Container>
 
 	)

@@ -1,7 +1,7 @@
-import { FC, ReactNode, useEffect, useReducer, useState } from 'react';
+import { FC, useEffect, useReducer, useState } from 'react';
 import { User } from '../../../../../domain/models/user_model';
 import UserUseCases from '../../../../../domain/usecases/user_usecases';
-import { ApiResponse, useFetch2 } from '../../../../../hooks/useFetch';
+import { ApiResponse, useFetch, useFetch2 } from '../../../../../hooks/useFetch';
 import { HomeContext } from './homeContext';
 import { homeReducers } from './homeReducers';
 
@@ -21,45 +21,53 @@ type Props = {
 
 
 export const HomeProvider: FC<Props> = ({ children }) => {
+    const [initialData, setInitialData] = useState<User[]>([]);
+    const [loading, setLoading] = useState<boolean>(false);
+    const [error, setError] = useState<Error | null>(null);
 
-    // const [loading, setLoading] = useState<boolean>(false);
-    // const [error, setError] = useState<Error | null>(null);
-
-    const { data, error, loading, getAPIData }: ApiResponse = useFetch2(() => userUseCases.getAllUsers());
-
-
+    // const { data, error, loading, getAPIData }: ApiResponse = useFetch2(() => userUseCases.getAllUsers());
 
     const userUseCases = new UserUseCases();
-    // const { data, error, loading, getAPIData }: ApiResponse = useFetch2(()=>userUseCases.getAllUsers());
+    // const { data, error, loading, getAPIData }: ApiResponse = useFetch(()=>userUseCases.getAllUsers(), false);
 
 
     const [state, dispatch] = useReducer(homeReducers, USERS_INITIAL_STATE);
 
-    // const getAllUsers = async () => {
-    //     setLoading(true);
-    //     setError(null);
 
-    //     try {
-    //         await new Promise(r => setTimeout(r, 1000));
 
-    //         const users = await userUseCases.getAllUsers();
-    //         dispatch({ type: 'Refresh-Data', payload: users });
-
-    //     } catch (error: any) {
-    //         console.log('<<<<<<<<< error >>>>>>>>>>>')
-    //         console.log('error aqui: ' + error);
-    //         setError(error);
-    //     }
-    //     setLoading(false);
-
-    // }
-
+    const resetToInitialState = () => {
+        dispatch({ type: 'Refresh-Data', payload: USERS_INITIAL_STATE.users });
+        setLoading(true);
+        setError(null);
+    }
 
     const getAllUsers = async () => {
+        resetToInitialState();
 
-     await   getAPIData();
-     dispatch({ type: 'Refresh-Data', payload: data as User[] });
+        try {
+            await new Promise(r => setTimeout(r, 1000));
+
+            const users = await userUseCases.getAllUsers();
+            setInitialData(users);
+            dispatch({ type: 'Refresh-Data', payload: users });
+
+        } catch (error: any) {
+            console.log('<<<<<<<<< error >>>>>>>>>>>')
+            console.log('error aqui: ' + error);
+            setError(error);
+        }
+        setLoading(false);
+
     }
+
+
+    // const getAllUsers = async () => {
+
+    //  await   getAPIData();
+    //  console.log('users: ' + data);
+
+    //  dispatch({ type: 'Refresh-Data', payload: data as User[] });
+    // }
 
 
     const getOneUser = async (id: number) => {
@@ -93,17 +101,26 @@ export const HomeProvider: FC<Props> = ({ children }) => {
     }
 
     const searchUserById = async (id: number) => {
-       await getAllUsers();
-        // const updateUser = await userUseCases.getOneUser(1);
+
+
+        const users = await userUseCases.getAllUsers();
+        dispatch({ type: 'Refresh-Data', payload: users });
         console.log('buscando user');
         await new Promise(r => setTimeout(r, 200));
         dispatch({ type: 'Search-User-ById', payload: id });
     }
 
+    const searchUserByName = async (name: string) => {
+        // dispatch({ type: 'Refresh-Data', payload: initialData });
+        console.log('buscando user');
+        await new Promise(r => setTimeout(r, 200));
+        dispatch({ type: 'Search-User-ByName', payload: {name: name, users: initialData}});
+    }
 
-    // useEffect(() => {
-    //     getAllUsers();
-    // }, []);
+
+    useEffect(() => {
+        getAllUsers();
+    }, []);
 
 
 
@@ -120,6 +137,7 @@ export const HomeProvider: FC<Props> = ({ children }) => {
             updateUser,
             deleteUser,
             searchUserById,
+            searchUserByName,
 
         }}>
             {children}

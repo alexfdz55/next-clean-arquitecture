@@ -13,6 +13,8 @@ interface ContextProps {
     updateUser: (user: User) => void;
     deleteUser: (user: User) => void;
     searchUserById: (id: number) => void;
+    searchUserByName: (name: string) => void;
+
 }
 
 

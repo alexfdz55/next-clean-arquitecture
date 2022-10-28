@@ -10,6 +10,8 @@ type UsersActionType =
    | { type: 'User-Updated', payload: User }
    | { type: 'Delete-User', payload: User }
    | { type: 'Search-User-ById', payload: number }
+   | { type: 'Search-User-ByName', payload: {name: string, users: User[]} }
+
 
 
 
@@ -52,14 +54,22 @@ export const homeReducers = (state: UsersState, action: UsersActionType): UsersS
       case 'Delete-User':
          return {
             ...state,
-            users: [...state.users.filter(user=> user.id !== action.payload.id)]
+            users: [...state.users.filter(user => user.id !== action.payload.id)]
          }
 
-         case 'Search-User-ById':
-            return {
-               ...state,
-               users: [...state.users.filter(user=> user.id == action.payload)]
-            }
+      case 'Search-User-ById':
+         return {
+            ...state,
+            users: [...state.users.filter(user => user.id === action.payload)]
+         }
+
+      case 'Search-User-ByName':
+         return {
+            ...action.payload.users,
+            users: [...action.payload.users.filter(user =>
+               user.name.toLowerCase().includes(action.payload.name.toLowerCase())
+            )]
+         }
 
       default:
          return state;
