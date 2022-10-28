@@ -92,7 +92,6 @@ export const useFetch = (request: Promise<any>, executeAtInit: boolean = false):
 export const useFetch2 = (request: ()=>Promise<any>): ApiResponse => {
     const [data, setData] = useState<any>();
     const [loading, setLoading] = useState<boolean>(false);
-
     const [error, setError] = useState<Error>();
 
 

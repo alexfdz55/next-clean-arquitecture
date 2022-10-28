@@ -7,7 +7,16 @@ import { AxiosHttpClient } from '../../protocols/http/axios-http-client';
 export interface IUserRepository {
     getAll(): Promise<User[]>;
     getOne(id: number): Promise<User>;
+    // add(user: User): Promise<User>;
+    // update(id: number): Promise<User>;
+    // delete(id: number): Promise<User>;
 }
+
+
+
+
+
+
 
 export class UserRepository implements IUserRepository {
     axiosHttpClient: AxiosHttpClient;
@@ -40,7 +49,7 @@ export class UserRepository implements IUserRepository {
 
     async getAll(): Promise<User[]> {
         const axiosRequest = await this.axiosHttpClient.request({
-            url: 'user',
+            url: 'users',
             method: 'get',
         });
 
