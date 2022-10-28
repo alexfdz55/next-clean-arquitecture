@@ -8,7 +8,7 @@ export type ApiResponse = {
     // status: Number;
     //   statusText: String;
     data: [] | null;
-    error: Error | undefined;
+    error: Error | null;
     loading: Boolean;
     getAPIData: () => Promise<void>;
 };
@@ -22,7 +22,7 @@ export const useFetch = (request: Promise<any>, executeAtInit: boolean = false):
     // const [status, setStatus] = useState<Number>(0);
     //   const [statusText, setStatusText] = useState<String>('');
     const [data, setData] = useState<any>();
-    const [error, setError] = useState<Error>();
+    const [error, setError] = useState<Error | null>(null);
     const [loading, setLoading] = useState<boolean>(false);
 
     const getAPIData = async () => {
@@ -92,7 +92,7 @@ export const useFetch = (request: Promise<any>, executeAtInit: boolean = false):
 export const useFetch2 = (request: ()=>Promise<any>): ApiResponse => {
     const [data, setData] = useState<any>();
     const [loading, setLoading] = useState<boolean>(false);
-    const [error, setError] = useState<Error>();
+    const [error, setError] = useState<Error | null>(null);
 
 
     // const userUseCases = new UserUseCases();
@@ -100,7 +100,7 @@ export const useFetch2 = (request: ()=>Promise<any>): ApiResponse => {
     const getAPIData = async () => {
         setLoading(true);
         setData(null);
-        setError(undefined);
+        setError(null);
         try {
             console.log('1');
             await new Promise(r => setTimeout(r, 1000));

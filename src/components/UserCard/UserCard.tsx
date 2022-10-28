@@ -3,10 +3,11 @@ import React from 'react';
 import { User } from '../../domain/models/user_model';
 
 export interface UserCardProps {
-	user: User
+	user: User,
+	onDelete: ()=>void,
 }
 
-const UserCard: React.FC<UserCardProps> = ({ user }) => {
+const UserCard: React.FC<UserCardProps> = ({ user, onDelete }) => {
 	return <Card
 		sx={{ minWidth: 275, backgroundColor: 'gray', margin: '20px' }}>
 		<CardContent>
@@ -36,7 +37,7 @@ const UserCard: React.FC<UserCardProps> = ({ user }) => {
 						Direccion:
 					</Typography>
 					<Typography variant="body2">
-						{`${user.address.city}, ${user.address.street}, ${user.address.suite}`}
+						{`${user.address?.city}, ${user.address?.street}, ${user.address?.suite}`}
 					</Typography>
 				</div>
 
@@ -45,22 +46,30 @@ const UserCard: React.FC<UserCardProps> = ({ user }) => {
 						Empresa
 					</Typography>
 					<Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-						{user.company.name}
+						{user.company?.name}
 					</Typography>
 					<Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-						{user.company.catchPhrase}
+						{user.company?.catchPhrase}
 					</Typography>
 					<Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-						{user.company.bs}
+						{user.company?.bs}
 					</Typography>
 				</div>
 
 			</Stack>
 
 		</CardContent>
-		{/* <CardActions>
-			<Button size="small">Learn More</Button>
-		</CardActions> */}
+		<CardActions>
+			<Button
+				variant='contained'
+				color='error'
+				size="small"
+				onClick={onDelete}
+				>
+				
+				Borrar
+			</Button>
+		</CardActions>
 	</Card>
 };
 

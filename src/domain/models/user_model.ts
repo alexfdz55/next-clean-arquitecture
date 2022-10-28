@@ -1,13 +1,13 @@
 export interface User {
 
-    id: 1,
+    id: number,
     name: string,
-    username: string,
     email: string,
-    address: Address,
-    phone: string,
+    username?: string,
+    address?: Address,
+    phone?: string,
     website: string,
-    company: Company,
+    company?: Company,
 }
 
 

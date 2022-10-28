@@ -25,7 +25,7 @@ export class UserRepository implements IUserRepository {
     }
     async getOne(id: number): Promise<User> {
         const axiosRequest = await this.axiosHttpClient.request({
-            url: 'user',
+            url: `users/${id.toString()}`,
             method: 'get',
         });
 
