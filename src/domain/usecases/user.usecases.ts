@@ -1,5 +1,5 @@
 import { User } from "../models/user_model"
-import { UserRepository, IUserRepository } from '../../data/repositories/user_repository';
+import { UserRepository, IUserRepository } from '../../data/repositories/user.repository';
 
 
 
@@ -10,7 +10,7 @@ export interface IUserUseCase {
 }
 
 
-class UserUseCases implements IUserUseCase {
+export class UserUseCases implements IUserUseCase {
     userRepository: IUserRepository;
 
     constructor(
@@ -28,4 +28,3 @@ class UserUseCases implements IUserUseCase {
     }
 }
 
-export default UserUseCases

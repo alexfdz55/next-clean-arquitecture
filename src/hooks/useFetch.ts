@@ -1,7 +1,4 @@
 import { useEffect, useState } from "react"
-import { User } from "../domain/models/user_model";
-import UserUseCases from "../domain/usecases/user_usecases";
-// import { HttpResponse } from "../protocols/http/http_utilities"
 
 
 export type ApiResponse<T = any> = {

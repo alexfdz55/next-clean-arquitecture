@@ -35,28 +35,10 @@ const UserCard: React.FC<UserCardProps> = ({ user, loading, onDelete }) => {
 					<Typography sx={{ mb: 1.5 }} color="text.secondary">
 						{user.email}
 					</Typography>
-					<Typography variant="h5" component="div">
-						Direccion:
-					</Typography>
-					<Typography variant="body2">
-						{`${user.address?.city}, ${user.address?.street}, ${user.address?.suite}`}
-					</Typography>
+				
+				
 				</div>
 
-				<div>
-					<Typography variant="h5" component="div">
-						Empresa
-					</Typography>
-					<Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-						{user.company?.name}
-					</Typography>
-					<Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-						{user.company?.catchPhrase}
-					</Typography>
-					<Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-						{user.company?.bs}
-					</Typography>
-				</div>
 
 			</Stack>
 

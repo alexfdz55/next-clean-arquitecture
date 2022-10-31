@@ -1,6 +1,6 @@
 import { FC, useEffect, useReducer, useState } from 'react';
 import { User } from '../../../../../domain/models/user_model';
-import UserUseCases from '../../../../../domain/usecases/user_usecases';
+import { UserUseCases } from '../../../../../domain/usecases';
 import { ApiResponse, useFetch, useFetch2 } from '../../../../../hooks/useFetch';
 import { HomeContext } from './homeContext';
 import { homeReducers } from './homeReducers';
