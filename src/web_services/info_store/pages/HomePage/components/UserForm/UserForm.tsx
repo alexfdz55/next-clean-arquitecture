@@ -2,8 +2,6 @@ import { Grid, Card, Typography, CardContent, TextField, Button, CircularProgres
 import React, { useContext, useState } from 'react';
 import { HomeContext } from '../../context/homeContext';
 import { User } from '../../../../../../domain/models/user_model';
-import { UserCard } from '../../../../../../components/UserCard';
-
 
 export interface UserFormInterface { }
 
@@ -29,10 +27,10 @@ const UserForm: React.FC<UserFormInterface> = () => {
 
         // const texts = [e.target.name];
         if (e.target.name === 'name') {
-            setUser({ ...user, name: e.target.value});
+            setUser({ ...user, name: e.target.value });
         }
-        else if(e.target.name === 'email'){
-            setUser({ ...user, email: e.target.value});
+        else if (e.target.name === 'email') {
+            setUser({ ...user, email: e.target.value });
         }
 
         // setUser({ ...user, [e.target.name]: e.target.value })
@@ -100,7 +98,20 @@ const UserForm: React.FC<UserFormInterface> = () => {
                                 inputProps={{ style: { color: 'white' } }}
                                 InputLabelProps={{ style: { color: 'white' } }}
                             />
+                            {/* <LoadingButton
+                                size="small"
+                                color="secondary"
+                                onClick={handleClick}
+                                loading={loading}
+                                loadingPosition="start"
+                               
+                                variant="contained"
+                            >
+                                Save
+                            </LoadingButton> */}
+                            
                             <Button
+                            
                                 variant='contained'
                                 color='primary'
                                 type='submit'

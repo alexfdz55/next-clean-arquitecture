@@ -19,6 +19,8 @@ const HomePage: React.FC<HomePageInterface> = () => {
 	const { users,
 		error,
 		loading,
+		loadingButton,
+		userSelect,
 		getAllUsers,
 		getOneUser,
 		// addUser,
@@ -100,7 +102,10 @@ const HomePage: React.FC<HomePageInterface> = () => {
 									<UserCard
 										key={user.id}
 										user={user}
-										onDelete={() => deleteUser(user)}
+										loading={user.id === userSelect?.id && loadingButton}
+										onDelete={()=> {
+											deleteUser(user)
+										}}
 									/>
 								)}
 							</div>

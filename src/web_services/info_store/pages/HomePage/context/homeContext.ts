@@ -5,7 +5,9 @@ import { User } from '../../../../../domain/models/user_model';
 interface ContextProps {
     users: User[];
     error: Error | null;
-    loading: Boolean;
+    loading: boolean;
+    loadingButton: boolean;
+    userSelect: User | null;
     // Methods
     getAllUsers: () => void;
     getOneUser: (id: number) => void;

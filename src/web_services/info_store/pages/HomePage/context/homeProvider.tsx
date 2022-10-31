@@ -23,6 +23,10 @@ type Props = {
 export const HomeProvider: FC<Props> = ({ children }) => {
     const [initialData, setInitialData] = useState<User[]>([]);
     const [loading, setLoading] = useState<boolean>(false);
+    const [loadingButton, setLoadingButton] = useState<boolean>(false);
+    const [userSelect, setUserSelect] = useState<User | null>(null);
+
+
     const [error, setError] = useState<Error | null>(null);
 
     // const { data, error, loading, getAPIData }: ApiResponse = useFetch2(() => userUseCases.getAllUsers());
@@ -61,14 +65,6 @@ export const HomeProvider: FC<Props> = ({ children }) => {
     }
 
 
-    // const getAllUsers = async () => {
-
-    //  await   getAPIData();
-    //  console.log('users: ' + data);
-
-    //  dispatch({ type: 'Refresh-Data', payload: data as User[] });
-    // }
-
 
     const getOneUser = async (id: number) => {
 
@@ -93,11 +89,16 @@ export const HomeProvider: FC<Props> = ({ children }) => {
     }
 
     const deleteUser = async (user: User) => {
+        setUserSelect(user);
+        setLoadingButton(true);
+        setError(null);
 
         // const updateUser = await userUseCases.getOneUser(1);
         console.log('borrando user');
         await new Promise(r => setTimeout(r, 1000));
         dispatch({ type: 'Delete-User', payload: user });
+        setLoadingButton(false);
+
     }
 
     const searchUserById = async (id: number) => {
@@ -114,7 +115,7 @@ export const HomeProvider: FC<Props> = ({ children }) => {
         // dispatch({ type: 'Refresh-Data', payload: initialData });
         console.log('buscando user');
         await new Promise(r => setTimeout(r, 200));
-        dispatch({ type: 'Search-User-ByName', payload: {name: name, users: initialData}});
+        dispatch({ type: 'Search-User-ByName', payload: { name: name, users: initialData } });
     }
 
 
@@ -129,6 +130,8 @@ export const HomeProvider: FC<Props> = ({ children }) => {
             ...state,
             error,
             loading,
+            loadingButton,
+            userSelect,
 
             // Methods
             getAllUsers,

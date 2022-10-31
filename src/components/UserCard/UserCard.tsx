@@ -1,13 +1,16 @@
-import { Button, Card, CardActions, CardContent, Stack, Typography } from '@mui/material';
-import React from 'react';
+import { Button, Card, CardActions, CardContent, CircularProgress, Stack, Typography } from '@mui/material';
+import React, { useState } from 'react';
 import { User } from '../../domain/models/user_model';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 export interface UserCardProps {
 	user: User,
-	onDelete: ()=>void,
+	loading: boolean,
+	onDelete: () => void,
 }
 
-const UserCard: React.FC<UserCardProps> = ({ user, onDelete }) => {
+const UserCard: React.FC<UserCardProps> = ({ user,loading ,onDelete }) => {
+	// const [loading, setLoading] = useState(false);
 	return <Card
 		sx={{ minWidth: 275, backgroundColor: 'gray', margin: '20px' }}>
 		<CardContent>
@@ -61,12 +64,21 @@ const UserCard: React.FC<UserCardProps> = ({ user, onDelete }) => {
 		</CardContent>
 		<CardActions>
 			<Button
+				startIcon={loading ?
+					<CircularProgress
+						thickness={6}
+						size='20px'
+						sx={{ color: 'white' }}
+					/>
+					:
+					<DeleteIcon />
+				}
 				variant='contained'
 				color='error'
 				size="small"
 				onClick={onDelete}
-				>
-				
+				// onClick={() => setLoading(!loading)}
+			>
 				Borrar
 			</Button>
 		</CardActions>
