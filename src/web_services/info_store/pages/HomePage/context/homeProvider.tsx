@@ -44,6 +44,13 @@ export const HomeProvider: FC<Props> = ({ children }) => {
     });
 
 
+    const getOneUseFetch: ApiResponse<User> = useFetch({
+        initialData: null,
+        isLoadedCallback:(user)=>    dispatch({ type: 'Get-One-User', payload: user }),
+        request: (id) => userUseCases.getOneUser(id),
+        executeAtInit: false,
+    });
+
 
     const resetToInitialState = () => {
         dispatch({ type: 'Refresh-Data', payload: USERS_INITIAL_STATE.users });
@@ -52,9 +59,11 @@ export const HomeProvider: FC<Props> = ({ children }) => {
 
     const getAllUsers = async () => {
         resetToInitialState();
-        await getAllUseFetch.getAPIData({id:2});
+        await getAllUseFetch.getAPIData();
         // dispatch({ type: 'Refresh-Data', payload: data });
     }
+
+
 
 
     // const getAllUsers = async () => {
@@ -80,8 +89,9 @@ export const HomeProvider: FC<Props> = ({ children }) => {
 
     const getOneUser = async (id: number) => {
 
-        const user = await userUseCases.getOneUser(id);
-        dispatch({ type: 'Get-One-User', payload: user });
+        // const user = await userUseCases.getOneUser(id);
+        await getOneUseFetch.getAPIData(id);
+        // dispatch({ type: 'Get-One-User', payload: getOneUseFetch.data });
     }
 
     const addUser = async (user: User) => {
@@ -107,11 +117,8 @@ export const HomeProvider: FC<Props> = ({ children }) => {
     }
 
     const searchUserById = async (id: number) => {
-        const users = await userUseCases.getAllUsers();
-        dispatch({ type: 'Refresh-Data', payload: users });
-        console.log('buscando user');
-        await new Promise(r => setTimeout(r, 200));
-        dispatch({ type: 'Search-User-ById', payload: id });
+        resetToInitialState();
+        await getAllUseFetch.getAPIData({ id: id });
     }
 
     const searchUserByName = async (name: string) => {
@@ -120,12 +127,9 @@ export const HomeProvider: FC<Props> = ({ children }) => {
         dispatch({ type: 'Search-User-ByName', payload: { name: name, users: initialData } });
     }
 
-    const searchUserByIdWithApi = async (id: number) => {
-        const users = await userUseCases.getAllUsers();
-        dispatch({ type: 'Refresh-Data', payload: users });
-        console.log('buscando user');
-        await new Promise(r => setTimeout(r, 200));
-        dispatch({ type: 'Search-User-ById', payload: id });
+    const searchUserByIdApi = async (id: number) => {
+        resetToInitialState();
+        await getAllUseFetch.getAPIData({ id: id });
     }
 
 
@@ -151,6 +155,7 @@ export const HomeProvider: FC<Props> = ({ children }) => {
             deleteUser,
             searchUserById,
             searchUserByName,
+            searchUserByIdApi,
 
         }}>
             {children}

@@ -16,7 +16,7 @@ export type ApiResponse<T = any> = {
 
 export type UseFetchProps<T = any> = {
     initialData?: T,
-    isLoadedCallback: (data:T)=>void,
+    isLoadedCallback?: (data:T)=>void,
     request: (params?: any)=>Promise<any>, 
     executeAtInit: boolean,
 };
@@ -38,10 +38,12 @@ export const useFetch = ({initialData, isLoadedCallback, request, executeAtInit}
         try {
             console.log('1');
             await new Promise(r => setTimeout(r, 1000));
+            console.log('params: ' + params);
             const response = await request(params); // userUseCases.getAllUsers();
             console.log('2');
             setData(response);
-            // console.log('users: '+ response);
+            // console.log('users: '+ JSON.stringify(response));
+            if(isLoadedCallback)
             isLoadedCallback(response);
          
         } catch (error: any) {

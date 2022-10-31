@@ -28,6 +28,7 @@ const HomePage: React.FC<HomePageInterface> = () => {
 		deleteUser,
 		searchUserById,
 		searchUserByName,
+		searchUserByIdApi,
 	} = useContext(HomeContext);
 
 
@@ -62,6 +63,13 @@ const HomePage: React.FC<HomePageInterface> = () => {
 						}}
 					>
 						Get one user
+					</Button>
+
+					<Button
+						variant='contained'
+						onClick={()=>searchUserByIdApi(1)}
+					>
+						Get User By id = 1
 					</Button>
 
 					<TextField
