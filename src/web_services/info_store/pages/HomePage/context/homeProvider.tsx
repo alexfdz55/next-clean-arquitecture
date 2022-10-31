@@ -28,23 +28,23 @@ export const HomeProvider: FC<Props> = ({ children }) => {
     const [userSelect, setUserSelect] = useState<User | null>(null);
 
     const userUseCases = new UserUseCases();
-   
 
-    
-    const { data, error, loading, getAPIData }: ApiResponse<User[]> = useFetch({
+
+
+    const getAllUseFetch: ApiResponse<User[]> = useFetch({
         initialData: [],
-        isLoadedCallback: (users)=>{
+        isLoadedCallback: (users) => {
             setInitialData(users);
             dispatch({ type: 'Refresh-Data', payload: users });
             console.log('users: ' + users);
-            
+
         },
-        request: () => userUseCases.getAllUsers(),
-        executeAtInit:  false,
+        request: (params) => userUseCases.getAllUsers(params),
+        executeAtInit: false,
     });
 
 
-    
+
     const resetToInitialState = () => {
         dispatch({ type: 'Refresh-Data', payload: USERS_INITIAL_STATE.users });
     }
@@ -52,11 +52,10 @@ export const HomeProvider: FC<Props> = ({ children }) => {
 
     const getAllUsers = async () => {
         resetToInitialState();
-        await getAPIData();
-        // console.log('users: '+ data);
+        await getAllUseFetch.getAPIData({id:2});
         // dispatch({ type: 'Refresh-Data', payload: data });
     }
-  
+
 
     // const getAllUsers = async () => {
     //     resetToInitialState();
@@ -121,6 +120,14 @@ export const HomeProvider: FC<Props> = ({ children }) => {
         dispatch({ type: 'Search-User-ByName', payload: { name: name, users: initialData } });
     }
 
+    const searchUserByIdWithApi = async (id: number) => {
+        const users = await userUseCases.getAllUsers();
+        dispatch({ type: 'Refresh-Data', payload: users });
+        console.log('buscando user');
+        await new Promise(r => setTimeout(r, 200));
+        dispatch({ type: 'Search-User-ById', payload: id });
+    }
+
 
     // useEffect(() => {
     //     // getAllUsers();
@@ -131,8 +138,8 @@ export const HomeProvider: FC<Props> = ({ children }) => {
     return (
         <HomeContext.Provider value={{
             ...state,
-            error,
-            loading,
+            error: getAllUseFetch.error,
+            loading: getAllUseFetch.loading,
             loadingButton,
             userSelect,
 

@@ -10,14 +10,14 @@ export type ApiResponse<T = any> = {
     data: T;
     error: Error | null;
     loading: boolean;
-    getAPIData: () => Promise<void>;
+    getAPIData: (params?: any) => Promise<void>;
 };
 
 
 export type UseFetchProps<T = any> = {
     initialData?: T,
     isLoadedCallback: (data:T)=>void,
-    request: ()=>Promise<any>, 
+    request: (params?: any)=>Promise<any>, 
     executeAtInit: boolean,
 };
 
@@ -31,16 +31,17 @@ export const useFetch = ({initialData, isLoadedCallback, request, executeAtInit}
 
     // const userUseCases = new UserUseCases();
 
-    const getAPIData = async () => {
+    const getAPIData = async (params?: any) => {
         setLoading(true);
         setData(initialData);
         setError(null);
         try {
             console.log('1');
             await new Promise(r => setTimeout(r, 1000));
-            const response = await request(); // userUseCases.getAllUsers();
+            const response = await request(params); // userUseCases.getAllUsers();
             console.log('2');
             setData(response);
+            // console.log('users: '+ response);
             isLoadedCallback(response);
          
         } catch (error: any) {

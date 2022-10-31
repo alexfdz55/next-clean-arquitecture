@@ -2,7 +2,8 @@ export type HttpRequest = {
     url: string
     method: HttpMethod
     body?: any
-    headers?: any
+    headers?: any, 
+    params?: any,
   }
   
   export interface HttpClient<R = any> {

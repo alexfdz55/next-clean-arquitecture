@@ -23,8 +23,8 @@ class UserUseCases implements IUserUseCase {
         return this.userRepository.getOne(id);
     }
 
-    getAllUsers(): Promise<User[]> {
-        return this.userRepository.getAll();
+    getAllUsers(params?: any): Promise<User[]> {
+        return this.userRepository.getAll(params);
     }
 }
 
