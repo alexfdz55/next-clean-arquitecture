@@ -3,6 +3,7 @@ import React, { useContext } from 'react';
 import { Post } from '../../../../domain/models';
 import { HomeVerumContext } from '../context/homeVerumContext';
 import PostCard from '../components/PostCard/PostCard';
+import { UserStatus } from '../../../../components/UserStatus';
 export interface HomePageVerumInterface { }
 
 const HomePageVerum: React.FC<HomePageVerumInterface> = () => {
@@ -11,6 +12,8 @@ const HomePageVerum: React.FC<HomePageVerumInterface> = () => {
 
 
 	return <Container>
+		<UserStatus />
+		<br />
 		<Button
 			variant='contained'
 			onClick={getAllPosts}

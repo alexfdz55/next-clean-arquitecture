@@ -5,6 +5,8 @@ import { User } from '../../../../domain/models/user_model';
 import { HomeContext } from './context/homeContext';
 import { useState } from 'react';
 import { UserForm } from './components/UserForm';
+import { UserStatus } from '../../../../components/UserStatus';
+import Link from 'next/link';
 export interface HomePageInterface { }
 
 const HomePage: React.FC<HomePageInterface> = () => {
@@ -37,6 +39,13 @@ const HomePage: React.FC<HomePageInterface> = () => {
 	return (
 
 		<Container>
+			<UserStatus />
+			<br />
+			<Link href="/verum">
+				<a>Ir a otra vista</a>
+			</Link>
+			<br />
+			<br />
 			<Stack
 				direction="row"
 				justifyContent="space-between"
@@ -67,7 +76,7 @@ const HomePage: React.FC<HomePageInterface> = () => {
 
 					<Button
 						variant='contained'
-						onClick={()=>searchUserByIdApi(1)}
+						onClick={() => searchUserByIdApi(1)}
 					>
 						Get User By id = 1
 					</Button>
@@ -111,7 +120,7 @@ const HomePage: React.FC<HomePageInterface> = () => {
 										key={user.id}
 										user={user}
 										loading={user.id === userSelect?.id && loadingButton}
-										onDelete={()=> {
+										onDelete={() => {
 											deleteUser(user)
 										}}
 									/>

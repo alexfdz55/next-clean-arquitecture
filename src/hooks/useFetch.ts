@@ -1,4 +1,6 @@
+import axios from "axios";
 import { useEffect, useState } from "react"
+import { UserUseCases } from "../domain/usecases";
 
 
 export type ApiResponse<T = any> = {
@@ -35,7 +37,7 @@ export const useFetch = ({initialData, isLoadedCallback, request, executeAtInit}
         try {
             console.log('1');
             await new Promise(r => setTimeout(r, 1000));
-            console.log('params: ' + params);
+            // console.log('params: ' + params);
             const response = await request(params); // userUseCases.getAllUsers();
             console.log('2');
             setData(response);
@@ -69,25 +71,26 @@ export const useFetch = ({initialData, isLoadedCallback, request, executeAtInit}
 
 
 
-export const useFetch2 = (request: ()=>Promise<any>): ApiResponse => {
+export const useFetch2 = ( request: ()=>Promise<any>,  executeAtInit = false): ApiResponse => {
     const [data, setData] = useState<any>();
     const [loading, setLoading] = useState<boolean>(false);
     const [error, setError] = useState<Error | null>(null);
 
 
-    // const userUseCases = new UserUseCases();
+    const userUseCases = new UserUseCases();
 
     const getAPIData = async () => {
         setLoading(true);
-        setData(null);
+        // setData(null);
         setError(null);
         try {
             console.log('1');
             await new Promise(r => setTimeout(r, 1000));
-            const response = await request(); // userUseCases.getAllUsers();
+            const response = await request()
+            // console.log('response: '+ response.name);
             console.log('2');
-
             setData(response);
+            // console.log('data: '+ data);
         } catch (error: any) {
             console.log('****************************');
             console.log(error);
@@ -99,10 +102,43 @@ export const useFetch2 = (request: ()=>Promise<any>): ApiResponse => {
         setLoading(false);
     }
 
-    useEffect(() => {
-        getAPIData();
-    }, []);
+    if (executeAtInit) {
+        useEffect(() => {
+            getAPIData();
+            
+        }, []);
+    }
 
 
     return { data, error, loading, getAPIData };
 }
+
+
+
+
+// export default function useFetch3(url: string){
+
+//     const [data,setData] = useState(null)
+//     const [error,setError] = useState(null)
+//     const [loading,setLoading] = useState(false)
+
+//     useEffect(() => {
+//         (
+//             async function(){
+//                 try{
+//                     setLoading(true)
+//                     const response = await axios.get(url)
+//                     setData(response.data)
+
+//                 }catch(err: any){
+//                     setError(err)
+//                 }finally{
+//                     setLoading(false)
+//                 }
+//             }
+//         )()
+//     }, [url])
+
+//     return { data, error, loading }
+
+// }
