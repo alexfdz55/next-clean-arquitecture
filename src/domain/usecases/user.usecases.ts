@@ -11,13 +11,13 @@ export interface IUserUseCase {
 
 
 export class UserUseCases implements IUserUseCase {
-    userRepository: IUserRepository;
+    private userRepository: IUserRepository;
 
     constructor(
         // private readonly userRepository: UserRepositoryInterface
     ) {
         this.userRepository = new UserRepository();
-     }
+    }
 
     getOneUser(id: number): Promise<User> {
         return this.userRepository.getOne(id);

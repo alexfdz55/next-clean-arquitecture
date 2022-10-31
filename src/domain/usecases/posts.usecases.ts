@@ -9,13 +9,13 @@ export interface IPostUseCases {
 
 
 export class PostUseCases implements IPostUseCases {
-    postRepository: IPostRepository;
+    private postRepository: IPostRepository;
 
     constructor(
         // private readonly postRepository: PostRepositoryInterface
     ) {
         this.postRepository = new PostRepository();
-     }
+    }
 
 
     getAllPosts(params?: any): Promise<Post[]> {

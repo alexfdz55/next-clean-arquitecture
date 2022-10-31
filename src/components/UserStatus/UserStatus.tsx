@@ -48,7 +48,7 @@ const UserStatus: React.FC<UserStatusInterface> = () => {
 			spacing={2}
 		>
 			{
-				data !== undefined && <h3>{data.name}</h3>
+				userState !== undefined && <h3>{JSON.stringify(userState)}</h3>
 			}
 			{
 				userState.id === 0 ?

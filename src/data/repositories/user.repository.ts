@@ -2,6 +2,7 @@ import { HttpStatusCode } from '../../constants/enums/http_status_code';
 import { UnexpectedError } from '../../domain/errors';
 import { User } from '../../domain/models/user_model';
 import { AxiosHttpClient } from '../../protocols/http/axios-http-client';
+import UserDTO from '../dto/user_dto';
 
 
 export interface IUserRepository {
@@ -19,7 +20,7 @@ export interface IUserRepository {
 
 
 export class UserRepository implements IUserRepository {
-    axiosHttpClient: AxiosHttpClient;
+    private axiosHttpClient: AxiosHttpClient;
     constructor() {
         this.axiosHttpClient = new AxiosHttpClient();
     }
@@ -27,14 +28,13 @@ export class UserRepository implements IUserRepository {
         const axiosRequest = await this.axiosHttpClient.request({
             url: `users/${id.toString()}`,
             method: 'get',
-        
+
         });
 
         if (axiosRequest.statusCode === HttpStatusCode.ok) {
-            const user = axiosRequest.body as User;
+            // const user = axiosRequest.body as User;
 
-            // console.log('user: '+ axiosRequest);
-
+            const user = new UserDTO(axiosRequest.body)
             return user;
         }
 
@@ -56,10 +56,10 @@ export class UserRepository implements IUserRepository {
         });
 
         if (axiosRequest.statusCode === HttpStatusCode.ok) {
-            const users = axiosRequest.body as User[];
+            // const users = axiosRequest.body as User[];
 
-            // console.log('user: '+ axiosRequest.body);
-
+            const users: User[] = axiosRequest.body.map((user: any) => new UserDTO(user));
+            console.log('<<<>>>' + JSON.stringify(users[0]));
             return users;
         }
 
