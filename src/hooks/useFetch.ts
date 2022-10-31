@@ -4,22 +4,27 @@ import UserUseCases from "../domain/usecases/user_usecases";
 // import { HttpResponse } from "../protocols/http/http_utilities"
 
 
-export type ApiResponse = {
+export type ApiResponse<T = any> = {
     // status: Number;
     //   statusText: String;
-    data: [] | null;
+    data: T;
     error: Error | null;
-    loading: Boolean;
+    loading: boolean;
     getAPIData: () => Promise<void>;
 };
 
 
-// export type Request<T = any> = {
-//     request: T
-//   }
+export type UseFetchProps<T = any> = {
+    initialData?: T,
+    isLoadedCallback: (data:T)=>void,
+    request: ()=>Promise<any>, 
+    executeAtInit: boolean,
+};
 
-export const useFetch = (request: ()=>Promise<any>, executeAtInit: boolean = false): ApiResponse => {
-    const [data, setData] = useState<any>();
+
+
+export const useFetch = ({initialData, isLoadedCallback, request, executeAtInit}: UseFetchProps): ApiResponse => {
+    const [data, setData] = useState<any>(initialData);
     const [loading, setLoading] = useState<boolean>(false);
     const [error, setError] = useState<Error | null>(null);
 
@@ -28,16 +33,16 @@ export const useFetch = (request: ()=>Promise<any>, executeAtInit: boolean = fal
 
     const getAPIData = async () => {
         setLoading(true);
-        setData(null);
+        setData(initialData);
         setError(null);
         try {
             console.log('1');
             await new Promise(r => setTimeout(r, 1000));
             const response = await request(); // userUseCases.getAllUsers();
             console.log('2');
-            console.log('users: ' + response);
-
             setData(response);
+            isLoadedCallback(response);
+         
         } catch (error: any) {
             console.log('****************************');
             console.log(error);
@@ -47,13 +52,15 @@ export const useFetch = (request: ()=>Promise<any>, executeAtInit: boolean = fal
         }
 
         setLoading(false);
+        
     }
 
-    // if (executeAtInit) {
-    //     useEffect(() => {
-    //         getAPIData();
-    //     }, []);
-    // }
+    if (executeAtInit) {
+        useEffect(() => {
+            getAPIData();
+            
+        }, []);
+    }
 
 
     return { data, error, loading, getAPIData };
