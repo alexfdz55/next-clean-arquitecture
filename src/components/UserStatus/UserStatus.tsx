@@ -5,7 +5,7 @@ import { User } from '../../domain/models';
 import { AppStore } from '../../redux/store';
 import { ApiResponse, useFetch, useFetch2 } from '../../hooks/useFetch';
 import { UserUseCases } from '../../domain/usecases/user.usecases';
-import { createUser, resetUser } from '../../redux/states/user';
+import { login, logout } from '../../redux/states/user';
 
 import LoginIcon from '@mui/icons-material/Login';
 import LogoutIcon from '@mui/icons-material/Close';
@@ -25,7 +25,7 @@ const UserStatus: React.FC<UserStatusInterface> = () => {
 
 	const { data, error, loading, getAPIData }: ApiResponse<User> = useFetch({
 		request: () => userUsesCases.getOneUser(1),
-		isLoadedCallback: (user) => dispatch(createUser(user)),
+		isLoadedCallback: (user) => dispatch(login(user)),
 		executeAtInit: false,
 	});
 
@@ -33,14 +33,10 @@ const UserStatus: React.FC<UserStatusInterface> = () => {
 
 	const onLogin = async () => {
 		await getAPIData();
-		// console.log(data);
-		// if (data != undefined) {
-		// 	dispatch(createUser(data));
-		// }
 	}
 
 	const onLogout = () => {
-		dispatch(resetUser());
+		dispatch(logout());
 	}
 
 
